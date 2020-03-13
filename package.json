@@ -1,0 +1,19 @@
+{
+  "name": "youtubeconverter",
+  "version": "1.0.0",
+  "description": "\"# Youtube-Converter\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Viktor727/Youtube-Converter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Viktor727/Youtube-Converter/issues"
+  },
+  "homepage": "https://github.com/Viktor727/Youtube-Converter#readme"
+}
