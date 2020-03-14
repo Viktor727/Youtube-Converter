@@ -21,7 +21,7 @@ if ($_POST) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="sass/style.css">
+    <link rel="stylesheet" href="css/style.css">
     <!-- <link rel="shortcut icon" sizes="108*108" href="favicon.png" type="images/x-icon"> -->
 
     <script src='https://www.google.com/recaptcha/api.js?render=<?php echo SITE_KEY; ?>'></script>
@@ -113,7 +113,7 @@ if ($_POST) {
                     <div class="col-12 d-flex search-block mt-3">
                         <input class="form-control search-input" type="text" placeholder="Youtube URL" aria-label="Search">
                         <button type="submit" class="search-btn btn text-uppercase">
-                            <span class="d-none d-sm-block">Test now!</span>
+                            <span class="d-none d-sm-block">Convert</span>
                             <img src="img/svg/arrow.svg" class="d-block d-sm-none" alt="arrow">
                         </button>
                     </div>
@@ -124,26 +124,199 @@ if ($_POST) {
     </header>
     <section class="how-to-use-wrapper d-flex justify-content-center w-100">
         <div class="container how-to-use-block pt-5 pb-5">
-            <div class="row pr-5 pl-5">
-                <div class="col-12 mt-4 mt-lg-0">
-                    <h2 class="how-use-title text-center">How to use ?</h2>
-                    <p class="why-wat-text text-left">Your website might not load for you, but there is always a chance
-                        it is
-                        because of your internet service provider, browser or other local problems. Also, your website
-                        might be unavailable only in the region you live in. Use our website availability tool to get
-                        detailed information about the health of your website from 11 checkpoints on 6 continents.</p>
+            <div class="pr-5 pl-5">
+                <div class="mt-4 mt-lg-0">
+                    <h2 class="text-center title">How does it work ?</h2>
+                    <div class="row mt-5">
+                        <div class="col-md-4 text-center">
+                            <div class="img-block">
+                                <img src="img/svg/path.svg" alt="path">
+                            </div>
+                            <h5 class="how-to-use__title title mb-0">Choose</h5>
+                            <p class="how-to-use__text">Choose from the two types of format you need</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="img-block">
+                                <img src="img/svg/domain.svg" alt="domain">
+                            </div>
+                            <h5 class="how-to-use__title title mb-0">Insert</h5>
+                            <p class="how-to-use__text">Find the link, which you want and paste in the text box</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="img-block">
+                                <img src="img/svg/tap.svg" alt="tap">
+                            </div>
+                            <h5 class="how-to-use__title title mb-0">Click</h5>
+                            <p class="how-to-use__text">Click on "convert" button and get the files</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <section class="about-product-wrapper pb-5">
+        <div class="container">
+            <h2 class="title text-center pt-5 pb-4">About product</h2>
+            <div class="row">
+                <div class="col-md-6 d-flex align-items-center">
+                    <img src="img/about-product-wrapper.jpg" class="img-fluid d-block m-auto rounded" alt="about-product image">
+                </div>
+                <div class="col-md-6">
+                    <p>
+                        By using our converter you can easily convert YouTube videos to mp3 (audio) or mp4 (video) files
+                        and download them for free - this service works for computers, tablets and mobile devices.
+                        <br> <br>
+                        The videos are always converted in the highest available quality. Please note that we can only
+                        convert videos up to a length of 1 hour - the limitation is necessary, so the conversion of any
+                        video will not take more than a couple of minutes.
+                        <br> <br>
+                        Our service is for free and does not require any software or registration. By using our service
+                        you are accepting our terms of use.
+                        <br> <br>
+                        To convert a video, copy the YouTube video URL into our converter, choose a format and click the
+                        convert button. As soon as the conversion is finished you can download the file by clicking on
+                        the download button.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="question-wrapper mb-5">
+        <div class="container text-center">
+            <h2 class="title">Do you have a question?</h2>
+            <a href="#" class="btn btn-question mt-3 pl-5 pr-5 pt-2 pb-2">Ask a question</a>
+        </div>
+    </section>
+
+    <section class="slider-wrapper mb-5">
+        <div class="container">
+            <h2 class="title pl-4 pr-4 pr-md-0 pl-md-0 text-center">What Do Customers Say About This Product?</h2>
+            <div class="row">
+                <div class="owl-carousel owl-theme card-deck" id="owl-carousel-nav">
+                    <div class="card p-3">
+                        <img src="img/slider1.jpg" class="d-block m-auto slider-img pt-3 pl-3 pr-3" alt="person image">
+                        <div class="card-body">
+                            <h5 class="card-title block-title mb-3">Wilhelm Dowall</h5>
+                            <h6 class="card-subtitle text-uppercase">CEO</h6>
+                            <p class="card-text font-weight-lighter mt-4">We use Uptimia to monitor our pet pharmacy
+                                e-commerce store and
+                                could not be happier. We are particularly satisfied with
+                                their speed monitoring service. They saved us from trouble many times.</p>
+                        </div>
+                    </div>
+                    <div class="card p-3">
+                        <img src="img/slider2.jpg" class="d-block m-auto slider-img pt-3 pl-3 pr-3" alt="person image">
+                        <div class="card-body">
+                            <h5 class="card-title block-title mb-3">Alberto Raya</h5>
+                            <h6 class="card-subtitle text-uppercase">Backend Developer</h6>
+                            <p class="card-text font-weight-lighter mt-4">We use Uptimia to monitor our pet pharmacy
+                                e-commerce store and
+                                could not be happier. We are particularly satisfied with
+                                their speed monitoring service. They saved us from trouble many times.</p>
+                        </div>
+                    </div>
+                    <div class="card p-3">
+                        <img src="img/slider3.jpg" class="d-block m-auto slider-img pt-3 pl-3 pr-3" alt="person image">
+                        <div class="card-body">
+                            <h5 class="card-title block-title mb-3">Uruewa Himona</h5>
+                            <h6 class="card-subtitle text-uppercase">Manager</h6>
+                            <p class="card-text font-weight-lighter mt-4">We use Uptimia to monitor our pet pharmacy
+                                e-commerce store and
+                                could not be happier. We are particularly satisfied with
+                                their speed monitoring service. They saved us from trouble many times.</p>
+                        </div>
+                    </div>
 
 
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-wrapper" id="contact">
+        <div class="container shadow rounded">
+            <div class="row pt-4 pb-4">
+                <div class="col-lg-8 bg-white">
+                    <h2 class="title mb-0 mt-3 text-center text-lg-left">Send a message</h2>
+                    <!-- <h3 class="subtitle text-center text-lg-left mb-5">Send a message</h3> -->
+                    <form class="needs-validation form" id="form" method="post" novalidate>
+                        <div class="row">
+                            <div class="group col-6">
+                                <input type="text" id="first-name" name="first-name" minlength="3" required>
+                                <label for="first-name">First Name</label>
+
+                                <div class="valid-feedback">
+                                    Looks good !
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please provide a valid name.
+                                </div>
+                            </div>
+                            <div class="group col-6">
+                                <input type="text" id="last-name" name="last-name" minlength="3" required>
+                                <label for="last-name">Last name</label>
+
+                                <div class="valid-feedback">
+                                    Looks good !
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please provide a valid name.
+                                </div>
+                            </div>
 
 
+                            <div class="group col-12">
+                                <input type="email" id="email" name="email" required>
+                                <label for="email">Email address</label>
 
+                                <div class="valid-feedback">
+                                    Looks good !
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please provide a valid email adress.
+                                </div>
+                            </div>
 
+                            <div class="group col-12">
+                                <input type="text" id="theme" name="theme" autocomplete="off" minlength="3" required>
+                                <label for="theme">Theme</label>
 
+                                <div class="valid-feedback">
+                                    Looks good !
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please provide a valid theme.
+                                </div>
+                            </div>
+
+                            <div class="group col-12">
+                                <textarea id="message" name="message" rows="1" autocomplete="off" minlength="10" required></textarea>
+                                <label for="message">How can we help?</label>
+                                <div class="textarea-hr">
+
+                                </div>
+                                <div class="valid-feedback">
+                                    Looks good !
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please provide a valid message.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="form-btn btn pl-4 pr-4 pt-2 pb-2">
+                                Submit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-4"></div>
+            </div>
+        </div>
+        </div>
+    </section>
 
 
 
@@ -169,6 +342,7 @@ if ($_POST) {
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
     <script>
         grecaptcha.ready(function() {
             grecaptcha.execute('<?php echo SITE_KEY; ?>', {
