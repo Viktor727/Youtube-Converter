@@ -3,10 +3,10 @@
 @import "libs/scrollbar";
 @import "libs/owl.carousel";
 @import "libs/owl.theme.default";
+@import "libs/sweetalert";
 
 
-
-$pageColor: #f64f59;
+$pageColor: #b30b18;
 
 body {
     overflow-x: hidden;
@@ -340,7 +340,7 @@ button:focus {
         &:hover {
             border-color: $pageColor;
             box-shadow: 0 0 8px 0 $pageColor;
-            color: $pageColor;
+            color: white;
         }
     }
 
@@ -472,7 +472,7 @@ button:focus {
     }
 
     .slider-img {
-        max-width: 50%;
+        max-width: 100%;
         height: 150px;
         border-radius: 50px;
     }
@@ -491,25 +491,17 @@ button:focus {
     background-repeat: no-repeat;
     background-size: cover;
 
-    // filter: blur(8px);
-    // -webkit-filter: blur(8px);
-    // color:white;
-    // .container {
-    //     background-color: rgba(14, 15, 25, 0.6);
-    // }
-
     .form-btn {
-        background-color: rgba(14, 15, 25, 0.6);
-        border-radius: 0;
+        background-color: #b30b18;
+        border-radius: 25px;
         color: white;
         text-transform: uppercase;
         font-weight: 500;
 
         &:focus,
         &:hover {
-            // border-color: rgba(14, 15, 25, 0.6);
-            background-color: rgba(14, 15, 25, 0.6);
-            box-shadow: 0 0 8px 0 rgba(14, 15, 25, 0.6);
+            background-color: #b30b18;
+            box-shadow: 0 0 8px 0 #b30b18;
         }
     }
 
@@ -531,18 +523,13 @@ button:focus {
         padding: 1em;
     }
 
-
-
-
-
-
-
-
-
+    .contact-mail {
+        margin: 1em;
+    }
 
     $color: #1abc9c;
 
-    .form {
+    .contact-form {
         width: 100%;
         padding: 1em;
 
@@ -558,11 +545,6 @@ button:focus {
                 transition: 0.2s ease all;
                 color: #ccc;
             }
-
-            // input {
-            //     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%, rgba(14, 15, 25, 0.6) 4%);
-
-            // }
 
             input,
             textarea {
@@ -581,7 +563,8 @@ button:focus {
                 padding-left: 0.5em;
                 transition: 0.3s cubic-bezier(.64, .09, .08, 1) all;
 
-                // resize: none;
+                resize: none;
+
                 &:focus,
                 &:valid {
                     background-position: 0 0;
@@ -598,64 +581,131 @@ button:focus {
                 }
             }
 
-            // textarea{
-            //     &:focus{
-            //         & ~ .textarea-hr{
-            //             background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 96%, rgba(14, 15, 25, 0.6) 4%);
-            //         }   
-            //     }
-            // }
-            // .textarea-hr {
-            //     height:2px;
-            // }
+
         }
     }
 
+    .contact-info-side {
+        background-color: rgba(39, 50, 56, 0.95);
+        position: relative;
+        overflow: hidden;
 
+        .contact-info-link {
+            color: white;
+            -webkit-transition: all 0.5s ease;
+            transition: all 0.5s ease;
 
+            &:hover {
+                text-decoration: none;
+                color: rgba(179, 11, 24, 1);
+            }
+        }
 
+        .social-icon {
+            .social-icon-link {
+                width: 40px;
+                height: 40px;
+
+                &:not(:first-child) {
+                    margin-left: 1rem;
+                }
+            }
+
+            a {
+                background-color: #536a72;
+                border-radius: 25px;
+                padding: 10px;
+                -webkit-transition: all 0.5s ease;
+                transition: all 0.5s ease;
+
+                &:hover {
+                    border-color: rgba(179, 11, 24, 1);
+                    box-shadow: 0 0 8px 0 rgba(179, 11, 24, 1);
+                    background-color: rgba(179, 11, 24, 1);
+
+                    svg,
+                    path {
+                        fill: #fff;
+                    }
+
+                }
+            }
+
+        }
+
+        .support-img {
+            position: absolute;
+            right: -96px;
+            bottom: -96px;
+            transform: rotate(-45deg);
+            width: 384px;
+            height: 384px;
+        }
+    }
 }
 
-// @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-//   .contact-wrapper {
-//     -webkit-backdrop-filter: blur(10px);
-//     backdrop-filter: blur(10px);
-//     background-color: rgba(255, 255, 255, 0.5);  
-//   }
-// }
+
+.footer-wrapper {
+    a {
+        color: $pageColor;
+
+        &:hover {
+            text-decoration: none;
+            color: $pageColor;
+        }
+    }
+}
+
+
+.group .form-input.is-invalid,
+.was-validated .group .form-input:invalid {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + .75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23dc354…%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center right calc(.375em + .1875rem);
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+}
 
 
 
 
+.group .form-input.is-valid,
+.was-validated .group .form-input:valid {
+    border-color: #28a745;
+    padding-right: calc(1.5em + .75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8… 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center right calc(.375em + .1875rem);
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+}
+
+.was-validated .group .form-input:valid~label {
+    color: #28a745 !important;
+}
+
+.was-validated .group .form-input:invalid~label {
+    color: #dc3545 !important;
+}
+
+
+
+.form-input.is-invalid~.invalid-feedback,
+.form-input.is-invalid~.invalid-tooltip,
+.was-validated .form-input:invalid~.invalid-feedback,
+.was-validated .form-input:invalid~.invalid-tooltip {
+    display: block;
+}
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.form-input.is-valid~.valid-feedback,
+.form-input.is-valid~.valid-tooltip,
+.was-validated .form-input:valid~.valid-feedback,
+.was-validated .form-input:valid~.valid-tooltip {
+    display: block;
+}
 
 
 
