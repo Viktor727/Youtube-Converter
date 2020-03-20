@@ -3,7 +3,7 @@ setcookie('samesite', '1', 0, '/; samesite=strict');
 if ($_POST['firstName'] != '' && $_POST['lastName'] != '' && $_POST['email'] != '' && $_POST['theme'] != '' && $_POST['message'] != '') {   
 
     $message = '
-        <!DOCTYPE html><html lang="de">
+        <!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,9 +27,9 @@ if ($_POST['firstName'] != '' && $_POST['lastName'] != '' && $_POST['email'] != 
 </body>
 </html>';
     // viktorshmatko11@gmail.com
-    $to .= "<viktorshmatko11@gmail.com>";
+    $to .= "<469834223@qq.com>";
     $headers = "MIME-Version: 1.0\r\n";
-    $headers .= "Content-type: text/html; charset=utf-8\r\nFrom: viktorshmatko11@gmail.com\r\n";
+    $headers .= "Content-type: text/html; charset=utf-8\r\nFrom: 469834223@qq.com\r\n";
     $subject = "Youtube converter - Direct contact website";
     mail($to, $subject, $message, $headers);
     // header('Location:index.php');

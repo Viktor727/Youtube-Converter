@@ -1,6 +1,7 @@
 <?php
-define('SITE_KEY', '');
-define('SECRET_KEY', '');
+define('SITE_KEY', '6LcMs-IUAAAAAKuHnc6QS-BBzgoWGDp-nlVFRqsy');
+define('SECRET_KEY', '6LcMs-IUAAAAANyY6y865EPluc4yIZ0Xnt8oJ_e7');
+
 if ($_POST) {
     function getCaptcha($SecretKey)
     {
@@ -9,9 +10,15 @@ if ($_POST) {
         return $Return;
     }
     $Return = getCaptcha($_POST['g-recaptcha-response']);
+    //var_dump($Return);
+    if ($Return->success == true && $Return->score > 0.5) {
+        echo "Succes!";
+    } else {
+        echo "You are a Robot!!";
+    }
 }
-?>
 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +79,7 @@ if ($_POST) {
                 <h5 class="subtitle text-white text-center pb-xl-4">
                     Just paste the youtube link and be happy !
                 </h5>
-                <form action="#" class="seach-form row" novalidate>
+                <form method="POST" class="seach-form row" novalidate>
 
                     <div class="col-12 d-flex">
                         <div class='swith-row d-flex justify-content-center'>
@@ -111,8 +118,8 @@ if ($_POST) {
 
 
                     <div class="col-12 d-flex search-block mt-3">
-                        <input class="form-control search-input" type="text" placeholder="Youtube URL" aria-label="Search">
-                        <button type="submit" class="search-btn btn text-uppercase">
+                        <input class="form-control search-input" name="url" type="text" placeholder="Youtube URL" aria-label="Search">
+                        <button type="submit" name="submit" class="search-btn btn text-uppercase">
                             <span class="d-none d-sm-block">Convert</span>
                             <img src="img/svg/arrow.svg" class="d-block d-sm-none" alt="arrow">
                         </button>
@@ -312,6 +319,7 @@ if ($_POST) {
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
+                            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" />
                             <button type="button" class="form-btn btn pl-4 pr-4 pt-2 pb-2">
                                 <img src="img/svg/send.svg" alt="send">
                                 <span class="align-middle pl-2">
@@ -358,7 +366,7 @@ if ($_POST) {
                         </a>
                         <a href="#" class="social-icon-link d-flex justify-content-center">
                             <!-- <img src="img/svg/social/instagram.svg" class="img-fluid social-icon-img" alt="instagram"> -->
-                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" width="21px" height="21px" fill="#273238" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                            <svg version="1.1" id="Capa_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" width="21px" height="21px" fill="#273238" style="enable-background:new 0 0 512 512;" xml:space="preserve">
                                 <g>
                                     <g>
                                         <path d="M352,0H160C71.648,0,0,71.648,0,160v192c0,88.352,71.648,160,160,160h192c88.352,0,160-71.648,160-160V160
@@ -381,7 +389,7 @@ if ($_POST) {
                         </a>
                         <a href="#" class="social-icon-link d-flex justify-content-center">
                             <!-- <img src="img/svg/social/youtube.svg" class="img-fluid social-icon-img" alt="youtube"> -->
-                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="21px" height="21px" viewBox="0 0 90.677 90.677" fill="#273238" style="enable-background:new 0 0 90.677 90.677;" xml:space="preserve">
+                            <svg version="1.1" id="Capa_3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="21px" height="21px" viewBox="0 0 90.677 90.677" fill="#273238" style="enable-background:new 0 0 90.677 90.677;" xml:space="preserve">
                                 <g>
                                     <g>
                                         <path d="M82.287,45.907c-0.937-4.071-4.267-7.074-8.275-7.521c-9.489-1.06-19.098-1.065-28.66-1.06
@@ -420,33 +428,12 @@ if ($_POST) {
                 </div>
             </div>
         </div>
-        </div>
     </section>
-    <section class="footer-wrapper">
+    <footer class="footer-wrapper">
         <div class="footer-copyright text-center py-3">© 2020 Copyright:
             <a href="index.php"> Youtube converter</a>
         </div>
-    </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    </footer>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
@@ -459,6 +446,7 @@ if ($_POST) {
                     action: 'homepage'
                 })
                 .then(function(token) {
+                    //console.log(token);
                     document.getElementById('g-recaptcha-response').value = token;
                 });
         });
