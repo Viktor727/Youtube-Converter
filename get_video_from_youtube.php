@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 
 include_once 'message.class.php'; 
 include_once 'youtube_converter.class.php'; 

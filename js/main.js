@@ -172,19 +172,19 @@ function GetYoutubeVideo(url, convertType) {
             }
         },
         error: function (response) { // Data was not sending
-            swal.close();
-            setTimeout(function () {
-              showErrorMessage("Something went wrong while converting your video. Please, Try again.");
-            }, 500);
+            showErrorMessage("Something went wrong while converting your video. Please, Try again.");
             
         }
    });
 }
 
 function showErrorMessage(errmsg) {
-    swal({icon:"error",
-                title: "Oops...",
-                text: errmsg});
+    swal.close();
+    setTimeout(function () {
+        swal({icon:"error",
+                    title: "Oops...",
+                    text: errmsg});
+    }, 500);
 }
 
 function ConvertBtnClicked() {
