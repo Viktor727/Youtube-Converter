@@ -125,6 +125,22 @@ jQuery("body").on('click', '[href*="#"]', function (e) {
     }, false);
 })();
 
+function ConvertBtnClicked() {
+    var inputForm = $('#youtube-url-input');
+    if(inputForm != null && inputForm.val() != null && inputForm.val() != '' && matchYoutubeUrl(inputForm.val())) {
+        var checkedConvertType = $('input[name="convert-type"]:checked');
+        if(checkedConvertType != null && checkedConvertType.length == 1) {
+            if(checkedConvertType.val() == "mp4")
+                GetYoutubeVideo(inputForm.val(),checkedConvertType.val());
+            else
+                showErrorMessage("Sorry, mp3 Convertation is not implemented yet.");
+        } else {
+            showErrorMessage('Please, Select Convertation Type(mp3 or mp4) Before Submitting.');
+        }
+    } else {
+        showErrorMessage('Please, Provide Valid Youtube Link.');
+    }
+}
 
 function GetYoutubeVideo(url, convertType) {
     swal({title: 'LOADING...',
@@ -151,6 +167,7 @@ function GetYoutubeVideo(url, convertType) {
                         text: "Video converted successfully. You will be redirected to download page."});
 
                         //window.open( response.downloadUrl );
+                        /*
                         // force download file (WARNING THIS NOT WORK IN CHROM FROM 2018 BECAUSE Of Cross-Origin...)
                         var a = $("<a>")
                             .attr("href", response.downloadUrl)
@@ -159,7 +176,9 @@ function GetYoutubeVideo(url, convertType) {
                             .appendTo("body");
                         a[0].click();
                         a.remove();
-
+                        */
+                        console.log(response.downloadUrl);
+                        submit_post_via_hidden_form("download_video.php", { "url": response.downloadUrl, "filename": response.fileName });
                     }, 500);
                 } else {
                     if(response.message != null)
@@ -187,21 +206,23 @@ function showErrorMessage(errmsg) {
     }, 500);
 }
 
-function ConvertBtnClicked() {
-    var inputForm = $('#youtube-url-input');
-    if(inputForm != null && inputForm.val() != null && inputForm.val() != '' && matchYoutubeUrl(inputForm.val())) {
-        var checkedConvertType = $('input[name="convert-type"]:checked');
-        if(checkedConvertType != null && checkedConvertType.length == 1) {
-            if(checkedConvertType.val() == "mp4")
-                GetYoutubeVideo(inputForm.val(),checkedConvertType.val());
-            else
-                showErrorMessage("Sorry, mp3 Convertation is not implemented yet.");
-        } else {
-            showErrorMessage('Please, Select Convertation Type(mp3 or mp4) Before Submitting.');
+function submit_post_via_hidden_form(url, params) {
+    var f = $("<form target='_blank' method='POST' style='display:none;'></form>").attr({
+        action: url
+    }).appendTo(document.body);
+
+    for (var i in params) {
+        if (params.hasOwnProperty(i)) {
+            $('<input type="hidden" />').attr({
+                name: i,
+                value: params[i]
+            }).appendTo(f);
         }
-    } else {
-        showErrorMessage('Please, Provide Valid Youtube Link.');
     }
+
+    f.submit();
+
+    f.remove();
 }
 
 function matchYoutubeUrl(url) {

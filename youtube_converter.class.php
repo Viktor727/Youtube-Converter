@@ -19,7 +19,7 @@ class YoutubeConverter {
 
     private function getVideoInfo()
     { 
-        return file_get_contents("https://www.youtube.com/get_video_info?video_id=".$this->extractVideoId($this->video_url)."&eurl&el=adunit"); 
+        return file_get_contents("https://www.youtube.com/get_video_info?video_id=".$this->extractVideoId($this->video_url)."&eurl&el=adunit&cpn=CouQulsSRICzWn5E&asv=2"); 
         # &cpn=CouQulsSRICzWn5E
     } 
       
