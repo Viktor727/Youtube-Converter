@@ -84,7 +84,7 @@ if ($_POST) {
                     <div class="col-12 d-flex">
                         <div class='swith-row d-flex justify-content-center'>
                             <div class="switch">
-                                <input type="radio" class="switch-input user_radio_btn" name="type" value="user" id="one" checked>
+                                <input type="radio" class="switch-input user_radio_btn" name="convert-type" value="mp3" id="one" checked>
                                 <label for="one" class="switch-label switch-label-off">
                                     <span>Mp3</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" id="OutLine1" viewBox="0 0 512 512" width="36px" height="36px">
@@ -97,7 +97,7 @@ if ($_POST) {
                                         </g>
                                     </svg>
                                 </label>
-                                <input type="radio" class="switch-input admin_radio_btn" name="type" value="admin" id="two">
+                                <input type="radio" class="switch-input admin_radio_btn" name="convert-type" value="mp4" id="two">
                                 <label for="two" class="switch-label switch-label-on">
                                     <span>Mp4</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" id="OutLine2" viewBox="0 0 512 512" width="36px" height="36px" class="">
@@ -118,8 +118,8 @@ if ($_POST) {
 
 
                     <div class="col-12 d-flex search-block mt-3">
-                        <input class="form-control search-input" name="url" type="text" placeholder="Youtube URL" aria-label="Search">
-                        <button type="submit" name="submit" class="search-btn btn text-uppercase">
+                        <input class="form-control search-input" name="url" type="text" placeholder="Youtube URL" aria-label="Search" id="youtube-url-input">
+                        <button type="button" class="search-btn btn text-uppercase" id="convert-video">
                             <span class="d-none d-sm-block">Convert</span>
                             <img src="img/svg/arrow.svg" class="d-block d-sm-none" alt="arrow">
                         </button>

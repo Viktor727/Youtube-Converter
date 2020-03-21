@@ -20,15 +20,19 @@
              }
          });
      }
+
+     var convertBtn = $('#convert-video');
+     if(convertBtn != null)
+         convertBtn.click(ConvertBtnClicked);
  });
 
-    jQuery("body").on('click', '[href*="#"]', function (e) {
-        var fixed_offset = 20;
-        jQuery('html,body').stop().animate({
-            scrollTop: jQuery(this.hash).offset().top - fixed_offset
-        }, 1000);
-        e.preventDefault();
-    });
+jQuery("body").on('click', '[href*="#"]', function (e) {
+    var fixed_offset = 20;
+    jQuery('html,body').stop().animate({
+        scrollTop: jQuery(this.hash).offset().top - fixed_offset
+    }, 1000);
+    e.preventDefault();
+});
 
 (function () {
     'use strict';
@@ -64,22 +68,112 @@
 })();
 
 
+function GetYoutubeVideo(url, convertType) {
+    swal({title: 'LOADING...',
+                showCancelButton: false,
+                showCloseButton: false,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                html: "<div class=\"loading-circle\"></div>"});
 
+    $.ajax({
+        url: 'get_video_from_youtube.php', //page url
+        type: "POST", //method of sending
+        dataType: "json", //format of the data
+        data: { 'url':url, 'type': convertType}, // serialize object
+        success: function (response) { //the data sending successfull
+            swal.close();
 
+            if(response != null) {
+                if(response.isOk != null && response.isOk) {
+                    setTimeout(function () {
 
+                        swal({icon:"success",
+                        title: "Success",
+                        text: "Video converted successfully. You will be redirected to download page."});
 
+                        //window.open( response.downloadUrl );
+                        // force download file (WARNING THIS NOT WORK IN CHROM FROM 2018 BECAUSE Of Cross-Origin...)
+                        var a = $("<a>")
+                            .attr("href", response.downloadUrl)
+                            .attr("download", "test.mp4")
+                            .attr("target", "_blank")
+                            .appendTo("body");
+                        a[0].click();
+                        a.remove();
 
-       function sendAjaxForm(result_form, form, page_url) {
-           $.ajax({
-               url: page_url, //page url
-               type: "POST", //method of sending
-               dataType: "html", //format of the data
-               data: $("#" + form).serialize(), // serialize object
-               success: function (response) { //the data sending successfull
-                   swal("Sent!", "Please check email!", "success");
-               },
-               error: function (response) { // Data was not sending
-                   console.log("Error! Please try again.");
-               }
-           });
+                    }, 500);
+                } else {
+                    if(response.message != null)
+                        showErrorMessage(response.message);
+                    else 
+                        showErrorMessage("Cannot Fetch Data From Server, Please Try Again.");
+                }
+            } else {
+                showErrorMessage("Cannot Fetch Data From Server, Please Try Again.");
+            }
+        },
+        error: function (response) { // Data was not sending
+            swal.close();
+            setTimeout(function () {
+              showErrorMessage("Something went wrong while converting your video. Please, Try again.");
+            }, 500)
+            
+        }
+   });
+}
+
+function showErrorMessage(errmsg) {
+    swal({icon:"error",
+                title: "Oops...",
+                text: errmsg});
+}
+
+function ConvertBtnClicked() {
+    var inputForm = $('#youtube-url-input');
+    if(inputForm != null && inputForm.val() != null && inputForm.val() != '' && matchYoutubeUrl(inputForm.val())) {
+        var checkedConvertType = $('input[name="convert-type"]:checked');
+        if(checkedConvertType != null && checkedConvertType.length == 1) {
+            if(checkedConvertType.val() == "mp4")
+                GetYoutubeVideo(inputForm.val(),checkedConvertType.val());
+            else
+                showErrorMessage("Sorry, mp3 Convertation is not implemented yet.");
+        } else {
+            showErrorMessage('Please, Select Convertation Type(mp3 or mp4) Before Submitting.');
+        }
+    } else {
+        showErrorMessage('Please, Provide Valid Youtube Link.');
+    }
+}
+
+function matchYoutubeUrl(url) {
+    // reg ex to check the following:
+    // https://
+    // m. or www.
+    // youtu.be or youtube.com
+    // embed/ or v/ or watch?v= or watch?smth&v=
+    // check length of v= property. Must be equal to 11 
+    //var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+    
+    // new reg ex
+    var p = /^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed)\/))([^\?&\"'>]+)/;
+    if(url.match(p))
+        return url.match(p)[1];
+    return false;
+}
+
+function sendAjaxForm(result_form, form, page_url) {
+   $.ajax({
+       url: page_url, //page url
+       type: "POST", //method of sending
+       dataType: "html", //format of the data
+       data: $("#" + form).serialize(), // serialize object
+       success: function (response) { //the data sending successfull
+           swal("Sent!", "Please check email!", "success");
+       },
+       error: function (response) { // Data was not sending
+           console.log("Error! Please try again.");
        }
+   });
+}
+
