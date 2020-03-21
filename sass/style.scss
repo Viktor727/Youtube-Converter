@@ -36,7 +36,9 @@ body {
 button:focus {
     outline: none;
 }
-
+.grecaptcha-badge{
+    z-index:5;
+}
 .header-wrapper {
     background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(14, 15, 25, 0.15)), to(rgba(14, 15, 25, 0.15))), url("../img/header-wrapper.jpg");
     background-image: linear-gradient(to top, rgba(14, 15, 25, 0.15), rgba(14, 15, 25, 0.15)), url("../img/header-wrapper.jpg");
