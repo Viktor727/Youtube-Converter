@@ -86,8 +86,8 @@ function GetMp3FromYoutubeVideo($youtubeURL)
 		$logdir = dirname(__FILE__);
 
 		// convert mp4 to mp3
-        $cmd = "$ffmpeg_cmd -i \"$localVideoPath\" -ar 44100 -ab 320k -ac 2 \"$mp3filePath\" >$logdir/ 2>$logdir/ffmpeg.log &";
-        shell_exec($cmd);
+        $cmd = "$ffmpeg_cmd -i \"$localVideoPath\" -ar 44100 -ab 320k -ac 2 \"$mp3filePath\"";
+        exec($cmd);
 
         //remove mp4
         unlink($localVideoPath);
