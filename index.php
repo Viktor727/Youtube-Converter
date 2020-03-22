@@ -124,6 +124,10 @@ if ($_POST) {
                             <img src="img/svg/arrow.svg" class="d-block d-sm-none" alt="arrow">
                         </button>
                     </div>
+
+                    <div id="youtube-video-preview-container" class="col-12 mt-3" style="margin-top:15px;">
+                        <img src="" id="youtube-video-preview" />
+                    </div>
                 </form>
             </div>
         </section>

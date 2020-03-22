@@ -25,6 +25,10 @@
      var convertBtn = $('#convert-video');
      if(convertBtn != null)
          convertBtn.click(ConvertBtnClicked);
+
+     var searchTb = $('#youtube-url-input');
+     if(searchTb != null)
+         searchTb.change(searchTbChanged);
  });
 
 
@@ -138,6 +142,27 @@ function ConvertBtnClicked() {
     }
 }
 
+function searchTbChanged() {
+    var searchTb = jQuery('#youtube-url-input');
+    if(searchTb != null) {
+        var url = searchTb.val();
+        if(url != null && url != '' && matchYoutubeUrl(url)) {
+            var container = jQuery("#youtube-video-preview-container");
+            if(container != null)
+                container.show();
+            
+            var videoId = GetParamFromURL(url,"v");
+            var imgUrl = "http://img.youtube.com/vi/" + videoId + "/maxresdefault.jpg";
+            var img = jQuery('#youtube-video-preview');
+            img.attr("src", imgUrl);
+        } else {
+            var container = jQuery("#youtube-video-preview-container");
+            if(container != null)
+                container.hide();
+        }
+    }
+}
+
 function GetYoutubeVideo(url, convertType) {
     swal({title: 'LOADING...',
                 showCancelButton: false,
@@ -229,12 +254,27 @@ function matchYoutubeUrl(url) {
     // embed/ or v/ or watch?v= or watch?smth&v=
     // check length of v= property. Must be equal to 11 
     //var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
-    
+    //https://www.youtube.com/watch?v=dAO3e6STS-c
     // new reg ex
-    var p = /^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed)\/))([^\?&\"'>]+)/;
+    var p = /^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed)\/))([^\?&\"'>]{11})/;
     if(url.match(p))
         return url.match(p)[1];
     return false;
+}
+
+function GetParamFromURL(url, sParam) {
+    var sPageURL = url.substr(url.indexOf("?")+1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
 }
 
 // window.addEventListener('load', function () {
