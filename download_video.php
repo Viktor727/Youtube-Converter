@@ -1,4 +1,6 @@
 <?php
+error_reporting(0);
+
 if (isset($_POST["url"]) && !empty($_POST["url"])) 
 {
 	$fileName = "converted_video.mp4";
