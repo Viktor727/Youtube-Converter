@@ -8,7 +8,7 @@ apt-get install -y cron
 * 23 * * * find path_to_your_site/videos/* -mtime +1 -type f -delete
 
 3. Give execution rights on the cron job, Run the following command:
-hmod 0644 /etc/cron.d/yourcrontab
+chmod 0644 /etc/cron.d/yourcrontab
 
 4. Apply your cron job. Run:
 crontab /etc/cron.d/hello-cron
