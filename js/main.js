@@ -129,14 +129,10 @@ function ConvertBtnClicked() {
     var inputForm = $('#youtube-url-input');
     if(inputForm != null && inputForm.val() != null && inputForm.val() != '' && matchYoutubeUrl(inputForm.val())) {
         var checkedConvertType = $('input[name="convert-type"]:checked');
-        if(checkedConvertType != null && checkedConvertType.length == 1) {
-            if(checkedConvertType.val() == "mp4")
-                GetYoutubeVideo(inputForm.val(),checkedConvertType.val());
-            else
-                showErrorMessage("Sorry, mp3 Convertation is not implemented yet.");
-        } else {
+        if(checkedConvertType != null && checkedConvertType.length == 1)
+            GetYoutubeVideo(inputForm.val(),checkedConvertType.val());
+        else
             showErrorMessage('Please, Select Convertation Type(mp3 or mp4) Before Submitting.');
-        }
     } else {
         showErrorMessage('Please, Provide Valid Youtube Link.');
     }
