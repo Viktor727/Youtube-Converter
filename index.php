@@ -1,6 +1,6 @@
 <?php
-define('SITE_KEY', '6LcMs-IUAAAAAKuHnc6QS-BBzgoWGDp-nlVFRqsy');
-define('SECRET_KEY', '6LcMs-IUAAAAANyY6y865EPluc4yIZ0Xnt8oJ_e7');
+define('SITE_KEY', '6Lelr-MUAAAAAMdZLJgyVHlLLkU4fGvNDRxoIPzL');
+define('SECRET_KEY', '6Lelr-MUAAAAAFPe3pGVtaBgGCnuu8ypyt_WO3fU');
 
 if ($_POST) {
     function getCaptcha($SecretKey)
@@ -11,11 +11,11 @@ if ($_POST) {
     }
     $Return = getCaptcha($_POST['g-recaptcha-response']);
     //var_dump($Return);
-    if ($Return->success == true && $Return->score > 0.5) {
-        echo "Succes!";
-    } else {
-        echo "You are a Robot!!";
-    }
+    // if ($Return->success == true && $Return->score > 0.5) {
+    //     echo "Succes!";
+    // } else {
+    //     echo "You are a Robot!!";
+    // }
 }
 
 ?>
@@ -110,6 +110,21 @@ if ($_POST) {
                                             <path d="M227.794,238.805a8,8,0,0,0,7.784.35l64-32a8,8,0,0,0,0-14.31l-64-32A8,8,0,0,0,224,168v64A8,8,0,0,0,227.794,238.805ZM240,180.944,278.111,200,240,219.056Z" data-original="#000000" class="active-path" data-old_color="#000000" />
                                         </g>
                                     </svg>
+                                </label>
+                                <input type="radio" class="switch-input out_radio_btn" name="convert-type" value="srt" id="three">
+                                <label for="three" class="switch-label switch-label-out">
+                                    <span>SRT</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" id="OutLine" viewBox="0 0 512 512" width="36px" height="36px">
+                                        <g>
+                                            <path d="M349.657,18.343A8,8,0,0,0,344,16H120A56.063,56.063,0,0,0,64,72V440a56.063,56.063,0,0,0,56,56H392a56.063,56.063,0,0,0,56-56V120a8,8,0,0,0-2.343-5.657ZM352,43.313,420.687,112H392a40.045,40.045,0,0,1-40-40ZM120,32H336V72a56.063,56.063,0,0,0,56,56h40V352H80V72A40.045,40.045,0,0,1,120,32ZM392,480H120a40.045,40.045,0,0,1-40-40V368H432v72A40.045,40.045,0,0,1,392,480Z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#FFFFFF" />
+                                            <path d="M192,400h16a8,8,0,0,0,0-16H192a24,24,0,0,0,0,48,8,8,0,0,1,0,16H176a8,8,0,0,0,0,16h16a24,24,0,0,0,0-48,8,8,0,0,1,0-16Z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#FFFFFF" />
+                                            <path d="M259.106,431.792A24,24,0,0,0,256,384H240a8,8,0,0,0-8,8v64a8,8,0,0,0,16,0V443.314l18.343,18.343a8,8,0,0,0,11.314-11.314ZM248,400h8a8,8,0,0,1,0,16h-8Z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#FFFFFF" />
+                                            <path d="M336,384H304a8,8,0,0,0,0,16h8v56h.007a7.993,7.993,0,1,0,15.986,0H328V400h8a8,8,0,0,0,0-16Z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#FFFFFF" />
+                                            <path d="M312,256H200a8,8,0,0,0,0,16H312a8,8,0,0,0,0-16Z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#FFFFFF" />
+                                            <path d="M160,304H352a8,8,0,0,0,8-8V152a8,8,0,0,0-8-8H160a8,8,0,0,0-8,8V296A8,8,0,0,0,160,304Zm8-16V192H344v96ZM300.944,176l-8-16h14.112l8,16Zm-17.888,0H268.944l-8-16h14.112Zm-32,0H236.944l-8-16h14.112Zm-32,0H204.944l-8-16h14.112ZM344,176H332.944l-8-16H344ZM179.056,160l8,16H168V160Z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#FFFFFF" />
+                                        </g>
+                                    </svg>
+
                                 </label>
                                 <span class="slider2"></span>
                             </div>
