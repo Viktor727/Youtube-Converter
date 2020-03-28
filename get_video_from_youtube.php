@@ -57,7 +57,8 @@ function GetYoutubeVideoByURL($youtubeURL) {
 
 function GetMp3FromYoutubeVideo($youtubeURL)
 {
-	global $server_video_save_folder;
+	global $server_video_save_folder_name;
+	global $server_video_save_folder_path;
 	global $server_ffmpeg_path;
 
 	$youtubeVideoByURLReturnMessage = GetYoutubeVideoByURL($youtubeURL);
@@ -67,9 +68,9 @@ function GetMp3FromYoutubeVideo($youtubeURL)
 		$videoURL = $youtubeVideoByURLReturnMessage->downloadUrl;
 		
 		$videoFileName = $youtubeVideoByURLReturnMessage->fileName;
-		$localVideoPath = dirname(__FILE__) . $server_video_save_folder . $videoFileName;
+		$localVideoPath = $server_video_save_folder_path . $videoFileName;
 		if(file_exists($localVideoPath)) 
-			$localVideoPath = dirname(__FILE__) . $server_video_save_folder . date("YmdHms") . "_" . $videoFileName;
+			$localVideoPath = $server_video_save_folder_path . date("YmdHms") . "_" . $videoFileName;
 
 		$mp3filePath = substr($localVideoPath, 0, strrpos($localVideoPath, '.')) . ".mp3";
 
@@ -81,12 +82,10 @@ function GetMp3FromYoutubeVideo($youtubeURL)
 		if($download === FALSE)
 			return new Message(false, "Error While Saving Video On Server. Please, Try Again.", null, null);
 
-		$ffmpeg_cmd = dirname(__FILE__) . $server_ffmpeg_path;
-
 		$logdir = dirname(__FILE__);
 
 		// convert mp4 to mp3
-        $cmd = "$ffmpeg_cmd -i \"$localVideoPath\" -ar 44100 -ab 320k -ac 2 \"$mp3filePath\"";
+        $cmd = "$server_ffmpeg_path -i \"$localVideoPath\" -ar 44100 -ab 320k -ac 2 \"$mp3filePath\"";
         exec($cmd);
 
         //remove mp4
@@ -95,7 +94,7 @@ function GetMp3FromYoutubeVideo($youtubeURL)
         //return download mp3 link
         $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
         $mp3_filename = substr($videoFileName, 0, strrpos($videoFileName, '.')) . ".mp3";
-        $mp3_link = $actual_link . $server_video_save_folder . $mp3_filename;
+        $mp3_link = $actual_link . $server_video_save_folder_name . $mp3_filename;
 
         return new Message(true, "Success", $mp3_link, $mp3_filename);
 	} 

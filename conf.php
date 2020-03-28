@@ -1,6 +1,7 @@
 <?php
-	$server_ffmpeg_path = "/ffmpeg_centos_x86_x64/ffmpeg";
-	#$server_ffmpeg_path = "/ffmpeg-amd64/ffmpeg";
-	#$server_ffmpeg_path = "/ffmpeg-win64/bin/ffmpeg.exe";
-	$server_video_save_folder = "/videos/";
+	$server_ffmpeg_path = "ffmpeg";
+	#$server_ffmpeg_path = dirname(__FILE__) . "/ffmpeg_centos6/ffmpeg";
+	$server_video_save_folder_name = "/videos/";
+	$server_video_save_folder_path = dirname(__FILE__) . $server_video_save_folder_name;
+
 ?>

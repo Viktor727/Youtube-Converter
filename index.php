@@ -9,13 +9,17 @@ if ($_POST) {
         $Return = json_decode($Response);
         return $Return;
     }
-    $Return = getCaptcha($_POST['g-recaptcha-response']);
-    //var_dump($Return);
-    // if ($Return->success == true && $Return->score > 0.5) {
-    //     echo "Succes!";
-    // } else {
-    //     echo "You are a Robot!!";
-    // }
+    
+    if(isset($_POST["g-recaptcha-response"])) 
+    {
+        $Return = getCaptcha($_POST['g-recaptcha-response']);
+        //var_dump($Return);
+        if ($Return->success == true && $Return->score > 0.5) {
+            echo "Succes!";
+        } else {
+            echo "You are a Robot!!";
+        }
+    }
 }
 
 ?>

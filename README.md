@@ -5,7 +5,7 @@ Please do the following steps, to set up auto delete videos with date > 2 days
 apt-get install -y cron
 
 2. Add the folowing line to your crontab /etc/cron.d/yourcrontab
-* 23 * * * find path_to_your_site/videos/* -mtime +1 -type f -delete
+* 23 * * * find /var/www/html/videos/* -mmin +59 -type f -delete
 
 3. Give execution rights on the cron job, Run the following command:
 chmod 0644 /etc/cron.d/yourcrontab
