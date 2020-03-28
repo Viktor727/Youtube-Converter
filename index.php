@@ -1,4 +1,6 @@
 <?php
+error_reporting(0);
+
 define('SITE_KEY', '6Lelr-MUAAAAAMdZLJgyVHlLLkU4fGvNDRxoIPzL');
 define('SECRET_KEY', '6Lelr-MUAAAAAFPe3pGVtaBgGCnuu8ypyt_WO3fU');
 
@@ -14,11 +16,11 @@ if ($_POST) {
     {
         $Return = getCaptcha($_POST['g-recaptcha-response']);
         //var_dump($Return);
-        if ($Return->success == true && $Return->score > 0.5) {
-            echo "Succes!";
-        } else {
-            echo "You are a Robot!!";
-        }
+        //if ($Return->success == true && $Return->score > 0.5) {
+        //    echo "Succes!";
+        //} else {
+        //    echo "You are a Robot!!";
+        //}
     }
 }
 
