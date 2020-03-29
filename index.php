@@ -4,6 +4,14 @@ error_reporting(0);
 define('SITE_KEY', '6Lelr-MUAAAAAMdZLJgyVHlLLkU4fGvNDRxoIPzL');
 define('SECRET_KEY', '6Lelr-MUAAAAAFPe3pGVtaBgGCnuu8ypyt_WO3fU');
 
+session_start();
+
+if($_GET) {
+    if(isset($_GET["code"]) && $_GET["code"]) {
+        $_SESSION["authcode"] = $_GET["code"];
+    }
+}
+
 if ($_POST) {
     function getCaptcha($SecretKey)
     {

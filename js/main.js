@@ -201,6 +201,10 @@ function GetYoutubeVideo(url, convertType) {
                         console.log(response.downloadUrl);
                         submit_post_via_hidden_form("download_video.php", { "url": response.downloadUrl, "filename": response.fileName });
                     }, 500);
+                } else if(response.isAuthRequired != null && response.isAuthRequired
+                    && (response.isAuthorized == null || (response.isAuthorized != null && !response.isAuthorized))
+                    && response.AuthUrl != null && response.AuthUrl != '') {
+                    showAuthMessage(response.AuthUrl);
                 } else {
                     if(response.message != null)
                         showErrorMessage(response.message);
@@ -224,6 +228,17 @@ function showErrorMessage(errmsg) {
         swal({icon:"error",
                     title: "Oops...",
                     text: errmsg});
+    }, 500);
+}
+
+function showAuthMessage(authUrl) {
+    swal.close();
+    setTimeout(function () {
+        swal({
+            icon: "warning",
+            text: "Authorization",
+            html: '<div class="auth-button-container"><p>You need to Authorize, before using this feature.</p><br /><a class="auth-button" href="'+authUrl+'"></a></div>',
+        });
     }, 500);
 }
 

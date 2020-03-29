@@ -5,6 +5,9 @@ include_once 'message.class.php';
 include_once 'youtube_converter.class.php'; 
 
 require_once('conf.php');
+require_once __DIR__ . '/vendor/autoload.php';
+
+session_start();
 
 function is_ajax() {
   return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
@@ -12,7 +15,7 @@ function is_ajax() {
 
 function GetYoutubeVideoByURL($youtubeURL) {
 	$handler = new YoutubeConverter(); 
-	$return = new Message(true, "Success!", null, null);
+	$return = Message::get_info_message("Success!");
 
 	// Check whether the url is valid 
 	if(!empty($youtubeURL) && !filter_var($youtubeURL, FILTER_VALIDATE_URL) === false)
@@ -39,18 +42,18 @@ function GetYoutubeVideoByURL($youtubeURL) {
 				$fileName = preg_replace('/[^A-Za-z0-9.\_\-]/', '', basename($videoFileName)); 
 
 		        if(!empty($downloadURL))
-		        	$return = new Message(true, "Success", $downloadURL, $fileName);
+		        	$return = Message::get_download_message("Success", $downloadURL, $fileName);
 		        else
-		    		$return = new Message(false, "Cannot Get Video Download Url. Please, Try Again.", null, null);
+		    		$return = Message::get_error_message("Cannot Get Video Download Url. Please, Try Again.");
 	    	}
 	    	else
-	    		$return = new Message(false, "Cannot Get Video Donwload URL. Please, Try Again.", null, null);
+	    		$return = Message::get_error_message("Cannot Get Video Donwload URL. Please, Try Again.");
 	    } 
 	    else
-	    	$return = new Message(false, "The video is not found, please check YouTube URL.", null, null);
+	    	$return = Message::get_error_message("The video is not found, please check YouTube URL.");
 	} 
 	else
-    	$return = new Message(false, "Please provide valid YouTube URL.", null, null);
+    	$return = Message::get_error_message("Please provide valid YouTube URL.");
 
     return $return;
 }
@@ -80,7 +83,7 @@ function GetMp3FromYoutubeVideo($youtubeURL)
 		// download mp4
 		$download = download_file($videoURL, $localVideoPath);
 		if($download === FALSE)
-			return new Message(false, "Error While Saving Video On Server. Please, Try Again.", null, null);
+			return Message::get_error_message("Error While Saving Video On Server. Please, Try Again.");
 
 		$logdir = dirname(__FILE__);
 
@@ -96,7 +99,7 @@ function GetMp3FromYoutubeVideo($youtubeURL)
         $mp3_filename = substr($videoFileName, 0, strrpos($videoFileName, '.')) . ".mp3";
         $mp3_link = $actual_link . $server_video_save_folder_name . $mp3_filename;
 
-        return new Message(true, "Success", $mp3_link, $mp3_filename);
+        return Message::get_download_message("Success", $mp3_link, $mp3_filename);
 	} 
 	else
 		return $youtubeVideoByURLReturnMessage;
@@ -104,7 +107,13 @@ function GetMp3FromYoutubeVideo($youtubeURL)
 
 function GetSrtByURL($url)
 {
-	$return = new Message(false, "Captions is not implemented yet. Will be done in a near future :)", null, null);
+	if(isset($_SESSION["authcode"]) && $_SESSION["authcode"]) {
+		$return = Message::get_auth_error_message("Yeah, You've authorized", true, true, "");
+	} else {
+		$AuthUrl = GetGoogleAuthUrl("youtube-tomp3.com");
+		$return = Message::get_auth_error_message("Please, Authorize before using this feature.", true, false, $AuthUrl);
+	}
+	return $return;
 }
 
 /**
@@ -113,47 +122,42 @@ function GetSrtByURL($url)
 */
 function download_file($remote_file, $local_file)
 {
-	/*
-	//const vars
-	$YT_BASE_URL = "http://www.youtube.com/";
-	$CURL_UA = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:11.0) Gecko Firefox/11.0";
-
-	$ch = curl_init($remote_file);
-	curl_setopt($ch, CURLOPT_USERAGENT, $CURL_UA);
-	curl_setopt($ch, CURLOPT_REFERER, $YT_BASE_URL);
-	$fp = fopen($local_file, 'w');
-	curl_setopt($ch, CURLOPT_FILE, $fp);
-	curl_exec ($ch);
-	curl_close ($ch);
-	fclose($fp);
-	*/
-
-	/*
-	$rh = fopen($file_source, 'rb');
-    $wh = fopen($file_target, 'w+b');
-    if (!$rh || !$wh) {
-        return false;
-    }
-
-    while (!feof($rh)) {
-        if (fwrite($wh, fread($rh, 4096)) === FALSE) {
-        	echo 'heh';
-            return false;
-        }
-        echo 'sss ';
-        flush();
-    }
-
-    fclose($rh);
-    fclose($wh);
-
-    return true;
-    */
-
 	if(file_put_contents($local_file, file_get_contents($remote_file, 'r')))
 	    return True;
 	else
 		return False;
+}
+
+function GetGoogleAuthUrl($redirectUri)
+{
+	global $youtube_AppName;
+	global $youtube_clientId;
+    global $youtube_clientSecret;
+    global $youtube_APIKey;
+
+	$client = new Google_Client();
+
+	$client->setApplicationName($youtube_AppName);
+	$client->setDeveloperKey($g_youtubeDataAPIKey);  
+	$client->setClientId($youtube_clientId);
+	$client->setClientSecret($youtube_clientSecret);
+	$client->setRedirectUri($redirectUri;
+	//$client->setScopes(array('https://www.googleapis.com/auth/analytics.readonly'));
+
+	$authUrl = "";
+
+	try
+	{ 
+		$authUrl = $client->createAuthUrl();
+	}
+	catch (Exception $ex)
+	{
+		echo "Error While Getting Authorization URL: " . $ex->getMessage();
+		$authUrl = "";
+		return False;
+	}
+
+	return $authUrl;
 }
 
 if (is_ajax()) {
@@ -169,7 +173,7 @@ if (is_ajax()) {
 			$return = GetSrtByURL($_POST["url"]);
 		}
 		else
-			$return = new Message(false, "Uknown type. Only mp3 and mp4 is allowed.", null, null);
+			$return = Message::get_error_message("Uknown type. Only mp3 and mp4 is allowed.");
 
 		echo $return->toJSON();
 	}
