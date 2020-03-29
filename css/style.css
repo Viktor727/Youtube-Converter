@@ -8415,11 +8415,6 @@ button:focus {
   z-index: 5; }
 
 .header-wrapper {
-  background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(14, 15, 25, 0.15)), to(rgba(14, 15, 25, 0.15))), url("../img/header-wrapper.jpg");
-  background-image: linear-gradient(to top, rgba(14, 15, 25, 0.15), rgba(14, 15, 25, 0.15)), url("../img/header-wrapper.jpg");
-  background-position: 30%;
-  background-repeat: no-repeat;
-  background-size: cover;
   overflow: hidden;
   min-height: 800px; }
   .header-wrapper .navbar {
@@ -8588,13 +8583,17 @@ button:focus {
 
 .meeting-wrapper {
   margin-bottom: 100px; }
+  .meeting-wrapper .search-block .search-input {
+    border: 1px solid #b30b18; }
+  .meeting-wrapper .site-title,
+  .meeting-wrapper .subtitle {
+    color: #b30b18; }
 
 .how-to-use-wrapper {
   margin-top: -100px; }
   .how-to-use-wrapper .how-to-use-block {
     border-radius: 4px;
-    background-color: white;
-    box-shadow: 0 13px 24px 0 rgba(233, 234, 235, 0.48); }
+    background-color: white; }
   .how-to-use-wrapper .title-third {
     color: #54656f;
     padding-top: 30px; }
