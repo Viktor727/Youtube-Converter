@@ -107,10 +107,14 @@ function GetMp3FromYoutubeVideo($youtubeURL)
 
 function GetSrtByURL($url)
 {
-	if(isset($_SESSION["authcode"]) && $_SESSION["authcode"]) {
+	if(isset($_SESSION["authcode"]) && !empty($_SESSION["authcode"])) {
 		$return = Message::get_auth_error_message("Yeah, You've authorized", true, true, "");
 	} else {
-		$AuthUrl = GetGoogleAuthUrl("youtube-tomp3.com");
+		$AuthUrl = GetGoogleAuthUrl();
+
+		$_SESSION["type"] = $_POST["type"];
+		$_SESSION["url"] = $_POST["url"];
+
 		$return = Message::get_auth_error_message("Please, Authorize before using this feature.", true, false, $AuthUrl);
 	}
 	return $return;
@@ -128,21 +132,24 @@ function download_file($remote_file, $local_file)
 		return False;
 }
 
-function GetGoogleAuthUrl($redirectUri)
+function GetGoogleAuthUrl()
 {
 	global $youtube_AppName;
 	global $youtube_clientId;
     global $youtube_clientSecret;
     global $youtube_APIKey;
 
+    $redirectUri = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+    //$redirectUri = "https://youtube-tomp3.com";
+
 	$client = new Google_Client();
 
 	$client->setApplicationName($youtube_AppName);
-	$client->setDeveloperKey($g_youtubeDataAPIKey);  
+	$client->setDeveloperKey($youtube_APIKey);  
 	$client->setClientId($youtube_clientId);
 	$client->setClientSecret($youtube_clientSecret);
-	$client->setRedirectUri($redirectUri;
-	//$client->setScopes(array('https://www.googleapis.com/auth/analytics.readonly'));
+	$client->setRedirectUri($redirectUri);
+	$client->setScopes(array('https://www.googleapis.com/auth/analytics.readonly'));
 
 	$authUrl = "";
 

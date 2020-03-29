@@ -36,8 +36,8 @@ class Message {
     {
         $m = new Message();
 
-        $this->isOk = true;
-        $this->message = $message;
+        $m->isOk = true;
+        $m->message = $message;
 
         return $m;
     }
@@ -46,10 +46,10 @@ class Message {
     {
         $m = new Message();
 
-        $this->isOk = true;
-        $this->message = $message;
-        $this->downloadUrl = $downloadUrl;
-        $this->fileName = $fileName;
+        $m->isOk = true;
+        $m->message = $message;
+        $m->downloadUrl = $downloadUrl;
+        $m->fileName = $fileName;
 
         return $m;
     }

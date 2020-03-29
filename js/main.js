@@ -133,8 +133,10 @@ function ConvertBtnClicked() {
     var inputForm = $('#youtube-url-input');
     if(inputForm != null && inputForm.val() != null && inputForm.val() != '' && matchYoutubeUrl(inputForm.val())) {
         var checkedConvertType = $('input[name="convert-type"]:checked');
-        if(checkedConvertType != null && checkedConvertType.length == 1)
-            GetYoutubeVideo(inputForm.val(),checkedConvertType.val());
+        if(checkedConvertType != null && checkedConvertType.length == 1) {
+            swal.close();
+            setTimeout(function() { GetYoutubeVideo(inputForm.val(),checkedConvertType.val()); }, 500);
+        }
         else
             showErrorMessage('Please, Select Convertation Type(mp3 or mp4) Before Submitting.');
     } else {
@@ -236,8 +238,9 @@ function showAuthMessage(authUrl) {
     setTimeout(function () {
         swal({
             icon: "warning",
-            text: "Authorization",
-            html: '<div class="auth-button-container"><p>You need to Authorize, before using this feature.</p><br /><a class="auth-button" href="'+authUrl+'"></a></div>',
+            title: "Authorization",
+            text: 'You need to Authorize, before using this feature.<br /><a class="auth-button" href="'+authUrl+'">Log In</a>',
+            html: true
         });
     }, 500);
 }

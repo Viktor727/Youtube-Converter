@@ -6,9 +6,21 @@ define('SECRET_KEY', '6Lelr-MUAAAAAFPe3pGVtaBgGCnuu8ypyt_WO3fU');
 
 session_start();
 
+$url = "";
+$type = "";
+$doConvertAgain = False;
+
 if($_GET) {
     if(isset($_GET["code"]) && $_GET["code"]) {
         $_SESSION["authcode"] = $_GET["code"];
+
+        if(isset($_SESSION["type"]) && !empty($_SESSION["type"]) && isset($_SESSION["url"]) && !empty($_SESSION["url"])) {
+            $url = $_SESSION["type"];
+            $type = $_SESSION["url"];
+            $doConvertAgain = True;
+            $_SESSION["type"] = null;
+            $_SESSION["url"] = null;
+        }
     }
 }
 
@@ -486,6 +498,17 @@ if ($_POST) {
     </script>
 
     <script src="js/main.js"></script>
+
+    <script>
+
+    <?php if($doConvertAgain) : ?>
+        //if User came from authentication page, then do convert again.
+        jQuery(document).ready(function() {        
+            //reference: js/main.js
+            GetYoutubeVideo(<?= $url ?>, <?= $type ?>);
+        });    
+    <?php endif; ?>
+    </script>
 </body>
 
 </html>
