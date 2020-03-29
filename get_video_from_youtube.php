@@ -44,7 +44,7 @@ function GetYoutubeVideoByURL($youtubeURL) {
 		    		$return = new Message(false, "Cannot Get Video Download Url. Please, Try Again.", null, null);
 	    	}
 	    	else
-	    		$return = new Message(false, "Cannot Get Video Donwload URL. Pleasem Try Again.", null, null);
+	    		$return = new Message(false, "Cannot Get Video Donwload URL. Please, Try Again.", null, null);
 	    } 
 	    else
 	    	$return = new Message(false, "The video is not found, please check YouTube URL.", null, null);
@@ -100,6 +100,11 @@ function GetMp3FromYoutubeVideo($youtubeURL)
 	} 
 	else
 		return $youtubeVideoByURLReturnMessage;
+}
+
+function GetSrtByURL($url)
+{
+	$return = new Message(false, "Captions is not implemented yet. Will be done in a near future :)", null, null);
 }
 
 /**
@@ -160,6 +165,9 @@ if (is_ajax()) {
 			$return = GetYoutubeVideoByURL($_POST["url"]);
 		elseif($_POST["type"] == "mp3")
 			$return = GetMp3FromYoutubeVideo($_POST["url"]);
+		else if($_POST["type"] == "srt") {
+			$return = GetSrtByURL($_POST["url"]);
+		}
 		else
 			$return = new Message(false, "Uknown type. Only mp3 and mp4 is allowed.", null, null);
 

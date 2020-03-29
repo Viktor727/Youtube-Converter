@@ -1,14 +1,8 @@
 "# Youtube-Converter" 
 
-Please do the following steps, to set up auto delete videos with date > 2 days
-1. Install cron. Run following command:
-apt-get install -y cron
+- Youtube Converter Uses ffmpeg to convert mp4 to mp3. Please, install ffmpeg before deploy.
+you can use static builds of ffmpeg. Please check conf.php file to set up Path to the ffmpeg executable file
 
-2. Add the folowing line to your crontab /etc/cron.d/yourcrontab
-* 23 * * * find /var/www/html/videos/* -mmin +59 -type f -delete
+- Added Cron To Remove Files every 2 hours
+sudo crontab -e
 
-3. Give execution rights on the cron job, Run the following command:
-chmod 0644 /etc/cron.d/yourcrontab
-
-4. Apply your cron job. Run:
-crontab /etc/cron.d/hello-cron
