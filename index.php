@@ -19,9 +19,8 @@ if ($_POST) {
         $Return = json_decode($Response);
         return $Return;
     }
-    
-    if(isset($_POST["g-recaptcha-response"])) 
-    {
+
+    if (isset($_POST["g-recaptcha-response"])) {
         $Return = getCaptcha($_POST['g-recaptcha-response']);
         //var_dump($Return);
         //if ($Return->success == true && $Return->score > 0.5) {
@@ -86,12 +85,13 @@ if ($_POST) {
             </div>
         </nav>
         <section class="meeting-wrapper d-flex align-items-center">
-            <div class="container text-center text-xl-left pb-5 pt-5 form-container">
-                <h1 class="site-title text-white text-uppercase text-center mb-3" id="home">
-                    Youtube to MP3, MP4 subtitle converter
+            <div class="container shadow text-center text-xl-left pb-5 pt-5 form-container">
+                <h1 class="site-title text-uppercase text-center mb-3" id="home">
+                    Youtube to MP3, MP4, subtitle converter
                 </h1>
-                <h5 class="subtitle text-white text-center pb-xl-4">
-                    Just paste the youtube link and be happy !
+                <h5 class="subtitle text-center pb-xl-4">
+                    By using our converter you can easily convert YouTube videos to mp3 (audio) or mp4 (video) files
+                    and download them for free - this service works for computers, tablets and mobile devices.
                 </h5>
                 <form method="POST" class="seach-form row" novalidate>
 
@@ -173,7 +173,7 @@ if ($_POST) {
                                 <img src="img/svg/path.svg" alt="path">
                             </div>
                             <h5 class="how-to-use__title title mb-0">Choose</h5>
-                            <p class="how-to-use__text">Choose from the two types of format you need</p>
+                            <p class="how-to-use__text">Choose from the three types of format you need</p>
                         </div>
                         <div class="col-md-4 text-center">
                             <div class="img-block">
