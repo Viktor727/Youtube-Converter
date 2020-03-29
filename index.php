@@ -147,7 +147,7 @@ if ($_POST) {
                     </div>
 
                     <div id="youtube-video-preview-container" class="col-12 mt-3" style="margin-top:15px;">
-                        <img src="" id="youtube-video-preview" />
+                        <img src="" id="youtube-video-preview" class="img-fluid d-block" />
                     </div>
                 </form>
             </div>
