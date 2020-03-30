@@ -18,6 +18,15 @@ class ComposerStaticInit314d5aeb11ab056f3cd16ad3fa03cc95
         array (
             'phpseclib\\' => 10,
         ),
+        'Y' => 
+        array (
+            'YoutubeDl\\' => 10,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Component\\Process\\' => 26,
+            'Symfony\\Component\\OptionsResolver\\' => 34,
+        ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
@@ -45,6 +54,18 @@ class ComposerStaticInit314d5aeb11ab056f3cd16ad3fa03cc95
         'phpseclib\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
+        'YoutubeDl\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/norkunas/youtube-dl-php/src',
+        ),
+        'Symfony\\Component\\Process\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/process',
+        ),
+        'Symfony\\Component\\OptionsResolver\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/options-resolver',
         ),
         'Psr\\Log\\' => 
         array (

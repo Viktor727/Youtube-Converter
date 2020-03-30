@@ -5,9 +5,6 @@ class Message {
 	public $message;
 	public $downloadUrl = null;
 	public $fileName = null;
-    public $isAuthRequired = False;
-    public $isAuthorized = False;
-    public $AuthUrl = "";
 
     public static function get_error_message($message)
     {
@@ -15,19 +12,6 @@ class Message {
 
         $m->isOk = false;
         $m->message = $message;
-
-        return $m;
-    }
-
-    public static function get_auth_error_message($message, $isAuthRequired, $isAuthorized, $AuthUrl)
-    {
-        $m = new Message();
-
-        $m->isOk = false;
-        $m->message = $message;
-        $m->isAuthRequired = $isAuthRequired;
-        $m->isAuthorized = $isAuthorized;
-        $m->AuthUrl = $AuthUrl;
 
         return $m;
     }

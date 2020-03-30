@@ -187,7 +187,13 @@ function GetYoutubeVideo(url, convertType) {
 
                         swal({icon:"success",
                         title: "Success",
-                        text: "Video converted successfully. You will be redirected to download page."});
+                        html: true,
+                        text: "<p>Video converted successfully. Please, Click button below to donwload.</p>"+
+                        "<form action='download_video.php' target='_blank' method='POST'>"+
+                            "<input type='hidden' name='url' value='" + response.downloadUrl + "' />"+
+                            "<input type='hidden' name='filename' value='" + response.fileName + "' />"+
+                            "<button type='submit' class='btn btn-primary'>Download</button>"+
+                        "</form>"});
 
                         //window.open( response.downloadUrl );
                         /*
@@ -200,13 +206,8 @@ function GetYoutubeVideo(url, convertType) {
                         a[0].click();
                         a.remove();
                         */
-                        console.log(response.downloadUrl);
-                        submit_post_via_hidden_form("download_video.php", { "url": response.downloadUrl, "filename": response.fileName });
+                        //submit_post_via_hidden_form("download_video.php", { "url": response.downloadUrl, "filename": response.fileName });
                     }, 500);
-                } else if(response.isAuthRequired != null && response.isAuthRequired
-                    && (response.isAuthorized == null || (response.isAuthorized != null && !response.isAuthorized))
-                    && response.AuthUrl != null && response.AuthUrl != '') {
-                    showAuthMessage(response.AuthUrl);
                 } else {
                     if(response.message != null)
                         showErrorMessage(response.message);
