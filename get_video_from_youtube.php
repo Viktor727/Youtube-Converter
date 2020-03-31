@@ -138,7 +138,7 @@ function GetMp3FromYoutubeVideo($youtubeURL)
 		$logdir = dirname(__FILE__);
 
 		// convert mp4 to mp3
-        $cmd = "$server_ffmpeg_path -i \"$localVideoPath\" -vn -ar 44100 -ab 320k -y \"$mp3filePath\"";
+        $cmd = "$server_ffmpeg_path -i \"$localVideoPath\" -vn -ar 8000 -ab 64k -y \"$mp3filePath\"";
         exec($cmd);
         chmod($mp3filePath, 777);
 
@@ -193,11 +193,15 @@ function GetSrtByURL($url)
 
     exec("mkdir \"$saveFolder_path\"");
     exec("chmod 777 \"$saveFolder_path\"");
-    exec("youtube-dl -o \"$saveFolder_path/%(title)s.%(ext)s\" --all-subs --skip-download  \"$url\"");
+    exec("youtube-dl -o \"$saveFolder_path/%(title)s.%(ext)s\" --all-subs --write-auto-sub --skip-download  \"$url\"");
+
+    if (is_dir_empty($saveFolder_path))
+	  return Message::get_error_message("There are no available captions for requested video."); 
+
     exec("zip -r -j \"$zipFile_Path\" \"$saveFolder_path\"");
 
     if(!file_exists($zipFile_Path))
-    	Message::get_error_message("Something went wring while getting captions. Please, Try again.");
+    	return Message::get_error_message("Something went wrong while compressing captions. Please, Try again.");
 
     $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
     $zip_link = $actual_link . $server_captions_save_folder_name . $zipFile_Name;
@@ -215,6 +219,12 @@ function download_file($remote_file, $local_file)
 	    return True;
 	else
 		return False;
+}
+
+function is_dir_empty($dir) {
+  if (!is_readable($dir)) 
+  	return NULL; 
+  return (count(scandir($dir)) == 2);
 }
 
 if (is_ajax()) {

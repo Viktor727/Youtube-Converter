@@ -154,7 +154,7 @@ function searchTbChanged() {
                 container.show();
             
             var videoId = GetParamFromURL(url,"v");
-            var imgUrl = "http://img.youtube.com/vi/" + videoId + "/maxresdefault.jpg";
+            var imgUrl = "https://img.youtube.com/vi/" + videoId + "/maxresdefault.jpg";
             var img = jQuery('#youtube-video-preview');
             img.attr("src", imgUrl);
         } else {
