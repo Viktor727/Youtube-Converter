@@ -79,8 +79,8 @@ if ($_POST) {
                 </div>
             </div>
         </nav>
-        <section class="meeting-wrapper d-flex align-items-center">
-            <div class="container shadow text-center text-xl-left pb-5 pt-5 form-container">
+        <section class="meeting-wrapper d-flex align-items-center mt-5">
+            <div class="container rounded shadow text-center text-xl-left pb-5 pt-5 form-container position-relative">
                 <h1 class="site-title text-uppercase text-center mb-3" id="home">
                     Youtube to MP3, MP4, subtitle converter
                 </h1>
@@ -150,7 +150,7 @@ if ($_POST) {
                     </div>
 
                     <div id="youtube-video-preview-container" class="col-12 mt-3" style="margin-top:15px;">
-                        <img src="" id="youtube-video-preview" class="img-fluid d-block" />
+                        <img src="" id="youtube-video-preview" class="img-fluid d-block shadow" />
                     </div>
                 </form>
             </div>

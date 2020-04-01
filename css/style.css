@@ -8396,6 +8396,18 @@ body {
   color: #3d4e57;
   font-size: 16px; }
 
+.sa-button-container .btn-primary {
+  color: #fff;
+  background-color: #b30b18;
+  border-color: #b30b18;
+  -webkit-transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+  -webkit-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out; }
+  .sa-button-container .btn-primary:hover, .sa-button-container .btn-primary:focus, .sa-button-container .btn-primary:active {
+    background-color: #b30b18 !important;
+    border-color: #b30b18 !important;
+    box-shadow: 0 0 8px 0 #b30b18 !important; }
+
 ::-moz-selection {
   background-color: #b30b18;
   color: white; }
@@ -8496,6 +8508,11 @@ button:focus {
       .header-wrapper .seach-form .search-btn:focus {
         border-color: #b30b18;
         box-shadow: 0 0 8px 0 #b30b18; }
+    .header-wrapper .seach-form .search-input:hover .search-btn {
+      border-color: #b30b18 !important;
+      box-shadow: 0 0 8px 0 #b30b18 !important; }
+    .header-wrapper .seach-form #youtube-video-preview {
+      border-radius: 0 0 9px 9px; }
     .header-wrapper .seach-form .switch {
       display: inline-block;
       -webkit-transition: all 0.1s ease;
@@ -8503,7 +8520,6 @@ button:focus {
       height: 100%;
       position: relative;
       background-color: rgba(14, 15, 25, 0.6);
-      width: 50%;
       border: 1px solid #b30b18;
       width: 100%;
       max-width: 501.2px;
@@ -8583,11 +8599,17 @@ button:focus {
 
 .meeting-wrapper {
   margin-bottom: 100px; }
+  .meeting-wrapper h1 {
+    font-size: 38px; }
   .meeting-wrapper .search-block .search-input {
     border: 1px solid #b30b18; }
-  .meeting-wrapper .site-title,
-  .meeting-wrapper .subtitle {
+  .meeting-wrapper .site-title {
     color: #b30b18; }
+  .meeting-wrapper .subtitle {
+    max-width: 680px;
+    margin: 0 auto; }
+  .meeting-wrapper .form-container {
+    border: 1px solid rgba(14, 15, 25, 0.6); }
 
 .how-to-use-wrapper {
   margin-top: -100px; }
