@@ -8396,14 +8396,14 @@ body {
   color: #3d4e57;
   font-size: 16px; }
 
-.sa-button-container .btn-primary {
+.sweet-alert .btn-primary {
   color: #fff;
-  background-color: #b30b18;
-  border-color: #b30b18;
+  background-color: #b30b18 !important;
+  border-color: #b30b18 !important;
   -webkit-transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
   -webkit-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
   transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out; }
-  .sa-button-container .btn-primary:hover, .sa-button-container .btn-primary:focus, .sa-button-container .btn-primary:active {
+  .sweet-alert .btn-primary:hover, .sweet-alert .btn-primary:focus, .sweet-alert .btn-primary:active {
     background-color: #b30b18 !important;
     border-color: #b30b18 !important;
     box-shadow: 0 0 8px 0 #b30b18 !important; }

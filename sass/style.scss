@@ -16,11 +16,11 @@ body {
 
 }
 
-.sa-button-container {
+.sweet-alert {
     .btn-primary {
         color: #fff;
-        background-color: $pageColor;
-        border-color: $pageColor;
+        background-color: $pageColor !important;
+        border-color: $pageColor !important;
         -webkit-transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
         -webkit-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
         transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
