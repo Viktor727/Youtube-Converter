@@ -14,13 +14,9 @@ ExpiresByType img/x-icon "access 1 year"
 ExpiresDefault "access 1 month"
 </IfModule>
 
-RewriteEngine On
-RewriteBase /
-RewriteCond %{HTTP:SSL} !=1 [NC]
-RewriteRule ^(.*) https://www.youtube-tomp3.com/$1 [L,R=301]
-
-#force https+www
-RewriteCond %{HTTPS} off [OR]
-RewriteCond %{HTTP_HOST} !^www\.
-RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$
-RewriteRule (.*) https://www.%1/$1 [NE,L,R]
+# Canonical HTTPS/non-WWW
+<IfModule mod_rewrite.c>
+	RewriteCond %{HTTPS} off [OR]
+	RewriteCond %{HTTP_HOST} ^www\.youtube-tomp3\.com [NC]
+	RewriteRule (.*) https://youtube-tomp3.com/$1 [L,R=301]
+</IfModule>
