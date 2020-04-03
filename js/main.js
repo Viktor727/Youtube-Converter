@@ -153,7 +153,8 @@ function searchTbChanged() {
             if(container != null)
                 container.show();
             
-            var videoId = GetParamFromURL(url,"v");
+            //var videoId = GetParamFromURL(url,"v");
+            var videoId = GetYoutubeVideoIDFromURL(url);
             var imgUrl = "https://img.youtube.com/vi/" + videoId + "/maxresdefault.jpg";
             var img = jQuery('#youtube-video-preview');
             img.attr("src", imgUrl);
@@ -185,6 +186,10 @@ function GetYoutubeVideo(url, convertType) {
                 if(response.isOk != null && response.isOk) {
                     setTimeout(function () {
 
+                        var isLocalDownload = true;
+                        if(convertType == "mp4")
+                            isLocalDownload = false;
+
                         swal({icon:"success",
                         title: "Success",
                         html: true,
@@ -192,6 +197,7 @@ function GetYoutubeVideo(url, convertType) {
                         "<form action='download_video.php' target='_blank' method='POST'>"+
                             "<input type='hidden' name='url' value='" + response.downloadUrl + "' />"+
                             "<input type='hidden' name='filename' value='" + response.fileName + "' />"+
+                            "<input type='hidden' name='islocal' value='" + isLocalDownload + "' />"+
                             "<button type='submit' class='btn btn-primary'>Download</button>"+
                         "</form>"});
 
@@ -294,6 +300,12 @@ function GetParamFromURL(url, sParam) {
             return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
         }
     }
+}
+
+function GetYoutubeVideoIDFromURL(url) {
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var match = url.match(regExp);
+    return (match&&match[7].length==11)? match[7] : false;
 }
 
 // window.addEventListener('load', function () {

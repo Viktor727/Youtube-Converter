@@ -15,167 +15,107 @@ use YoutubeDl\Exception\PrivateVideoException;
 
 session_start();
 
+if (is_ajax()) {
+	if (isset($_POST["type"]) && !empty($_POST["type"]) 
+		&& isset($_POST["url"]) && !empty($_POST["url"])) 
+	{
+		$return = "";
+		if($_POST["type"] == "mp4")
+			//$return = GetYoutubeVideoByURL($_POST["url"]);
+			$return = GetYoutubeVideoDonwloadURLByURL($_POST["url"]);
+		else if($_POST["type"] == "mp3")
+			$return = GetMp3FromYoutubeVideo($_POST["url"]);
+			//$return = GetMp3DownloadURLFromYoutubeVideo($_POST["url"]);
+		else if($_POST["type"] == "srt")
+			$return = GetSrtByURL($_POST["url"]);
+		else
+			$return = Message::get_error_message("Uknown type. Only mp3, mp4 and srt is allowed.");
+
+		echo $return->toJSON();
+	}
+}
+
+
 function is_ajax() {
   	return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 }
 
-function GetYoutubeVideoByURL($youtubeURL) {
-	/*
-	$handler = new YoutubeConverter(); 
-	$return = Message::get_info_message("Success!");
-
-	// Check whether the url is valid 
+function ValidateYoutubeURL($youtubeURL) {
 	if(!empty($youtubeURL) && !filter_var($youtubeURL, FILTER_VALIDATE_URL) === false)
-	{ 
-		
-	    // Get the downloader object 
-	    $downloader = $handler->getDownloader($youtubeURL); 
-	     
-	    // Set the url 
-	    $downloader->setUrl($youtubeURL); 
-	     
-	    // Validate the youtube video url 
-	    if($downloader->hasVideo())
-	    { 
-	        // Get the video download link info 
-	        $videoDownloadLink = $downloader->getVideoDownloadLink(); 
-	        
-        	if(isset($videoDownloadLink) && $videoDownloadLink != null)
-        	{
-		       	$videoTitle = $videoDownloadLink[0]['title']; 
-				$videoQuality = $videoDownloadLink[0]['qualityLabel']; 
-				$videoFormat = $videoDownloadLink[0]['format']; 
-				$videoFileName = strtolower(str_replace(' ', '_', $videoTitle)).'.'.$videoFormat; 
-				$downloadURL = $videoDownloadLink[0]['url']; 
-				$fileName = preg_replace('/[^A-Za-z0-9.\_\-]/', '', basename($videoFileName)); 
+	{
+		/*
+		$parsed_url = parse_url($youtubeURL);
+	    if($parsed_url == null)
+	 		return Message::get_error_message("Please, Provide Valid URL.A");
 
-		        if(!empty($downloadURL))
-		        	$return = Message::get_download_message("Success", $downloadURL, $fileName);
-		        else
-		    		$return = Message::get_error_message("Cannot Get Video Download Url. Please, Try Again.");
-	    	}
-	    	else
-	    		$return = Message::get_error_message("Cannot Get Video Donwload URL. Please, Try Again.");
-	    } 
-	    else
-	    	$return = Message::get_error_message("The video is not found, please check YouTube URL.");
-	} else
-    	return Message::get_error_message("Please provide valid YouTube URL.");
-	*/
+	 	parse_str($parsed_url["query"], $queryParams);
+	 	if($queryParams == null || empty($queryParams))
+	 		return Message::get_error_message("Please, Provide Valid URL.");
+    	
+    	$videoId = $queryParams["v"];
+	    if($videoId == null || empty($videoId))
+    		return Message::get_error_message("Please, Provide valid URL. URL must contain video ID.");
+		*/
 
+    	$videoId = GetVideoIDByURL($youtubeURL);
+    	if($videoId == null || empty($videoId))
+    		return Message::get_error_message("Please, Provide valid URL. URL must contain video ID.");
 
-	if(!empty($youtubeURL) && !filter_var($youtubeURL, FILTER_VALIDATE_URL) === false)
-	{ 
-    	$dl = new YoutubeDl([
-		    'continue' => false, // force resume of partially downloaded files. By default, youtube-dl will resume downloads if possible.
-		    'format' => 'bestvideo+bestaudio',
-		]);
-		// For more options go to https://github.com/rg3/youtube-dl#user-content-options
-
-		$dl->setDownloadPath('/var/www/html/videos');
-		// Enable debugging
-		/*$dl->debug(function ($type, $buffer) {
-		    if (\Symfony\Component\Process\Process::ERR === $type) {
-		        echo 'ERR > ' . $buffer;
-		    } else {
-		        echo 'OUT > ' . $buffer;
-		    }
-		});*/
-		try {
-		    $video = $dl->download($youtubeURL);
-		    //echo $video->getTitle(); // Will return Phonebloks
-		    //$video->getFile(); // \SplFileInfo instance of downloaded file
-		    
-		    $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
-		    $link = $actual_link . "/videos/". $video->getFilename();
-		    chmod("/var/www/html/videos/".$video->getFilename(), 777);
-    		
-    		return Message::get_download_message("Video is downloading. You will be redirected to the download page.", $link , $video->getFilename());
-		} catch (NotFoundException $e) {
-		    return Message::get_error_message("Video not found");
-		} catch (PrivateVideoException $e) {
-		    return Message::get_error_message("Video is private");
-		} catch (CopyrightException $e) {
-		    return Message::get_error_message("The YouTube account associated with this video has been terminated due to multiple third-party notifications of copyright infringement");
-		} catch (Exception $e) {
-		    return Message::get_error_message("Failed to download");
-		}
-    	return Message::get_error_message("Something goes wrong while downloading video. Please, try again.");
-	} 
+    	return Message::get_download_message("Success", null, $videoId);
+	}
 	else
     	return Message::get_error_message("Please provide valid YouTube URL.");
 
-    return $return;
+    return null;
 }
 
-function GetMp3FromYoutubeVideo($youtubeURL)
+function GetMp3DownloadURLFromYoutubeVideo($youtubeURL)
 {
-	global $server_video_save_folder_name;
-	global $server_video_save_folder_path;
-	global $server_ffmpeg_path;
+	$validateURLMessage = ValidateYoutubeURL($youtubeURL);
+	if($validateURLMessage != null && $validateURLMessage->isOk) {
+		$videoId = $validateURLMessage->fileName;
 
-	$youtubeVideoByURLReturnMessage = GetYoutubeVideoByURL($youtubeURL);
+	    $cmd = "youtube-dl -g -f worstaudio \"$youtubeURL\"";
+        $downloadVideoURL = exec($cmd);
+        if(empty($downloadVideoURL))
+    		return Message::get_error_message("Can't Find URL To Load audio. Please, try again.");
 
-	if($youtubeVideoByURLReturnMessage->isOk == true) 
-	{
-		$videoURL = $youtubeVideoByURLReturnMessage->downloadUrl;
-		
-		$videoFileName = $youtubeVideoByURLReturnMessage->fileName;
-		$localVideoPath = $server_video_save_folder_path . $videoFileName;
-		//if(file_exists($localVideoPath)) 
-		//	$localVideoPath = $server_video_save_folder_path . date("YmdHms") . "_" . $videoFileName;
+    	$fileName = $videoId . ".mp3"; //or webm
 
-		$mp3filePath = substr($localVideoPath, 0, strrpos($localVideoPath, '.')) . ".mp3";
-
-		touch($localVideoPath);
-		chmod($localVideoPath, 777);
-
-		// download mp4
-		//$download = download_file($videoURL, $localVideoPath);
-		//if($download === FALSE)
-		//	return Message::get_error_message("Error While Saving Video On Server. Please, Try Again.");
-
-		$logdir = dirname(__FILE__);
-
-		// convert mp4 to mp3
-        $cmd = "$server_ffmpeg_path -i \"$localVideoPath\" -vn -ar 8000 -ab 64k -y \"$mp3filePath\"";
-        exec($cmd);
-        chmod($mp3filePath, 777);
-
-        //remove mp4
-        unlink($localVideoPath);
-
-        //return download mp3 link
-        $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
-        $mp3_filename = substr($videoFileName, 0, strrpos($videoFileName, '.')) . ".mp3";
-        $mp3_link = $actual_link . $server_video_save_folder_name . $mp3_filename;
-
-        return Message::get_download_message("Success", $mp3_link, $mp3_filename);
+    	return Message::get_download_message("Success", $downloadVideoURL, $fileName);
 	} 
 	else
-		return $youtubeVideoByURLReturnMessage;
+    	return $validateURLMessage;
+}
+
+function GetYoutubeVideoDonwloadURLByURL($youtubeURL) {
+	$validateURLMessage = ValidateYoutubeURL($youtubeURL);
+	if($validateURLMessage != null && $validateURLMessage->isOk) {
+		$videoId = $validateURLMessage->fileName;
+
+	    $cmd = "youtube-dl -g -f best \"$youtubeURL\"";
+        $downloadVideoURL = exec($cmd);
+        if(empty($downloadVideoURL))
+    		return Message::get_error_message("Can't Find URL To Load Video. Please, try again.");
+
+    	$fileName = $videoId . ".mp4"; //or webm
+
+    	return Message::get_download_message("Success", $downloadVideoURL, $fileName);
+	} 
+	else
+    	return $validateURLMessage;
 }
 
 function GetSrtByURL($url)
 {
 	global $server_captions_save_folder_name;
 	global $server_captions_save_folder_path;
+	
+	$validateURLMessage = ValidateYoutubeURL($url);
+	if($validateURLMessage == null || !$validateURLMessage->isOk)
+		return $validateURLMessage;
 
-	if(empty($url) || filter_var($url, FILTER_VALIDATE_URL) === false)
-		return Message::get_error_message("Please, Provide Valid URL.");
-
-    $parsed_url = parse_url($url);
-    if($parsed_url == null)
- 		return Message::get_error_message("Please, Provide Valid URL.");
-
- 	parse_str($parsed_url["query"], $queryParams);
- 	if($queryParams == null || empty($queryParams))
- 		return Message::get_error_message("Please, Provide Valid URL.");
-
-    $videoId = $queryParams["v"];
-    if($videoId == null || empty($videoId))
-    	return Message::get_error_message("Please, Provide valid URL.");
-
+	$videoId = $validateURLMessage->fileName;
     $foldername = $videoId;
 
     if(file_exists($server_captions_save_folder_path . $foldername))
@@ -227,23 +167,161 @@ function is_dir_empty($dir) {
   return (count(scandir($dir)) == 2);
 }
 
-if (is_ajax()) {
-	if (isset($_POST["type"]) && !empty($_POST["type"]) 
-		&& isset($_POST["url"]) && !empty($_POST["url"])) 
-	{
-		$return = "";
-		if($_POST["type"] == "mp4")
-			$return = GetYoutubeVideoByURL($_POST["url"]);
-		elseif($_POST["type"] == "mp3")
-			$return = GetMp3FromYoutubeVideo($_POST["url"]);
-		else if($_POST["type"] == "srt") {
-			$return = GetSrtByURL($_POST["url"]);
-		}
-		else
-			$return = Message::get_error_message("Uknown type. Only mp3, mp4 and srt is allowed.");
+function GetVideoIDByURL($url) {
+	preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $url, $matches);
 
-		echo $return->toJSON();
-	}
+	if(sizeof($matches) > 1){
+		return $matches[1];
+	} else
+		return null;
+
+}
+
+
+// we don't use it anymore
+function GetYoutubeVideoByURL($youtubeURL) {
+	// Old logic to fetch load URL 
+	/*
+	$handler = new YoutubeConverter(); 
+	$return = Message::get_info_message("Success!");
+
+	// Check whether the url is valid 
+	if(!empty($youtubeURL) && !filter_var($youtubeURL, FILTER_VALIDATE_URL) === false)
+	{ 
+		
+	    // Get the downloader object 
+	    $downloader = $handler->getDownloader($youtubeURL); 
+	     
+	    // Set the url 
+	    $downloader->setUrl($youtubeURL); 
+	     
+	    // Validate the youtube video url 
+	    if($downloader->hasVideo())
+	    { 
+	        // Get the video download link info 
+	        $videoDownloadLink = $downloader->getVideoDownloadLink(); 
+	        
+        	if(isset($videoDownloadLink) && $videoDownloadLink != null)
+        	{
+		       	$videoTitle = $videoDownloadLink[0]['title']; 
+				$videoQuality = $videoDownloadLink[0]['qualityLabel']; 
+				$videoFormat = $videoDownloadLink[0]['format']; 
+				$videoFileName = strtolower(str_replace(' ', '_', $videoTitle)).'.'.$videoFormat; 
+				$downloadURL = $videoDownloadLink[0]['url']; 
+				$fileName = preg_replace('/[^A-Za-z0-9.\_\-]/', '', basename($videoFileName)); 
+
+		        if(!empty($downloadURL))
+		        	$return = Message::get_download_message("Success", $downloadURL, $fileName);
+		        else
+		    		$return = Message::get_error_message("Cannot Get Video Download Url. Please, Try Again.");
+	    	}
+	    	else
+	    		$return = Message::get_error_message("Cannot Get Video Donwload URL. Please, Try Again.");
+	    } 
+	    else
+	    	$return = Message::get_error_message("The video is not found, please check YouTube URL.");
+	} else
+    	return Message::get_error_message("Please provide valid YouTube URL.");
+	*/
+
+
+	if(!empty($youtubeURL) && !filter_var($youtubeURL, FILTER_VALIDATE_URL) === false)
+	{ 
+		
+    	$dl = new YoutubeDl([
+		    'continue' => false, // force resume of partially downloaded files. By default, youtube-dl will resume downloads if possible.
+		    'format' => 'bestvideo+bestaudio',
+		]);
+		// For more options go to https://github.com/rg3/youtube-dl#user-content-options
+
+		$dl->setDownloadPath('/var/www/html/videos');
+		// Enable debugging
+		/*$dl->debug(function ($type, $buffer) {
+		    if (\Symfony\Component\Process\Process::ERR === $type) {
+		        echo 'ERR > ' . $buffer;
+		    } else {
+		        echo 'OUT > ' . $buffer;
+		    }
+		});*/
+		try {
+		    $video = $dl->download($youtubeURL);
+		    //echo $video->getTitle(); // Will return Phonebloks
+		    //$video->getFile(); // \SplFileInfo instance of downloaded file
+		    
+		    $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+		    $link = $actual_link . "/videos/". $video->getFilename();
+		    chmod("/var/www/html/videos/".$video->getFilename(), 777);
+    		
+    		return Message::get_download_message("Video is downloading. You will be redirected to the download page.", $link , $video->getFilename());
+		} catch (NotFoundException $e) {
+		    return Message::get_error_message("Video not found");
+		} catch (PrivateVideoException $e) {
+		    return Message::get_error_message("Video is private");
+		} catch (CopyrightException $e) {
+		    return Message::get_error_message("The YouTube account associated with this video has been terminated due to multiple third-party notifications of copyright infringement");
+		} catch (Exception $e) {
+		    return Message::get_error_message("Failed to download");
+		}
+
+    	return Message::get_error_message("Something goes wrong while downloading video. Please, try again.");
+	} 
+	else
+    	return Message::get_error_message("Please provide valid YouTube URL.");
+
+    return $return;
+}
+
+function GetMp3FromYoutubeVideo($youtubeURL)
+{
+	global $server_video_save_folder_name;
+	global $server_video_save_folder_path;
+	global $server_ffmpeg_path;
+
+	//$youtubeVideoByURLReturnMessage = GetYoutubeVideoByURL($youtubeURL);
+	$youtubeVideoByURLReturnMessage = GetYoutubeVideoDonwloadURLByURL($youtubeURL);
+
+	if($youtubeVideoByURLReturnMessage->isOk == true) 
+	{
+		$videoURL = $youtubeVideoByURLReturnMessage->downloadUrl;
+		
+		$videoFileName = $youtubeVideoByURLReturnMessage->fileName;
+		$localVideoPath = $server_video_save_folder_path . $videoFileName;
+
+		//if file is already exists -> then do not ovewrite and create new with datestamp
+		//if(file_exists($localVideoPath)) 
+		//	$localVideoPath = $server_video_save_folder_path . date("YmdHms") . "_" . $videoFileName;
+
+		$mp3filePath = substr($localVideoPath, 0, strrpos($localVideoPath, '.')) . ".mp3";
+
+		// create video file and give all permissions to it
+		//touch($localVideoPath);
+		//chmod($localVideoPath, 777);
+
+		// download mp4
+		//$download = download_file($videoURL, $localVideoPath);
+		//if($download === FALSE)
+		//	return Message::get_error_message("Error While Saving Video On Server. Please, Try Again.");
+
+		$logdir = dirname(__FILE__);
+
+		// convert mp4 to mp3
+        //$cmd = "$server_ffmpeg_path -i \"$localVideoPath\" -vn -ar 8000 -ab 64k -y \"$mp3filePath\"";
+        $cmd = "$server_ffmpeg_path -i \"$videoURL\" -vn -ar 16000 -ab 128k -y \"$mp3filePath\"";
+        exec($cmd);
+        //chmod($mp3filePath, 777);
+
+        //remove mp4
+        //unlink($localVideoPath);
+
+        //return download mp3 link
+        $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+        $mp3_filename = substr($videoFileName, 0, strrpos($videoFileName, '.')) . ".mp3";
+        $mp3_link = $actual_link . $server_video_save_folder_name . $mp3_filename;
+
+        return Message::get_download_message("Success", $mp3_link, $mp3_filename);
+	} 
+	else
+		return $youtubeVideoByURLReturnMessage;
 }
 
 ?>
