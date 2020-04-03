@@ -11,7 +11,27 @@ if (isset($_POST["url"]) && !empty($_POST["url"]))
 
     $parsed = parse_url($_POST["url"]);
 
-	if(file_exists(dirname(__FILE__) . $parsed["path"]))
+    if(isset($_POST["islocal"]) && ($_POST["islocal"] == 'true' || $_POST["islocal"] == 'True'))
+    {
+		if(file_exists(dirname(__FILE__) . $parsed["path"]))
+		{
+			// Define header for force download 
+			header("Cache-Control: public"); 
+			header("Content-Description: File Transfer"); 
+			//header("Content-Length: ".filesize(dirname(__FILE__) . $parsed["path"]));
+			header("Content-Disposition: attachment; filename=$fileName"); 
+			header("Content-Type: application/zip"); 
+			header("Content-Transfer-Encoding: binary");
+
+			// Read the file 
+			readfile(dirname(__FILE__) . $parsed["path"]);
+		} 
+		else
+		{
+			echo "File not exist. " .  $parsed["path"];
+		}
+	} 
+	else
 	{
 		// Define header for force download 
 		header("Cache-Control: public"); 
@@ -22,12 +42,9 @@ if (isset($_POST["url"]) && !empty($_POST["url"]))
 		header("Content-Transfer-Encoding: binary");
 
 		// Read the file 
-		readfile(dirname(__FILE__) . $parsed["path"]);
-	} 
-	else
-	{
-		echo "File not exist. " .  $parsed["path"];
+		readfile($_POST["url"]);
 	}
+
 }
 
 

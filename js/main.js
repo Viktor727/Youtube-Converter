@@ -185,6 +185,10 @@ function GetYoutubeVideo(url, convertType) {
                 if(response.isOk != null && response.isOk) {
                     setTimeout(function () {
 
+                        var isLocalDownload = false;
+                        if(convertType == "mp3")
+                            isLocalDownload = true;
+
                         swal({icon:"success",
                         title: "Success",
                         html: true,
@@ -192,6 +196,7 @@ function GetYoutubeVideo(url, convertType) {
                         "<form action='download_video.php' target='_blank' method='POST'>"+
                             "<input type='hidden' name='url' value='" + response.downloadUrl + "' />"+
                             "<input type='hidden' name='filename' value='" + response.fileName + "' />"+
+                            "<input type='hidden' name='islocal' value='" + isLocalDownload + "' />"+
                             "<button type='submit' class='btn btn-primary'>Download</button>"+
                         "</form>"});
 
