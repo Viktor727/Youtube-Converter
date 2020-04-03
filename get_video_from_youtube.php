@@ -43,17 +43,23 @@ function is_ajax() {
 function ValidateYoutubeURL($youtubeURL) {
 	if(!empty($youtubeURL) && !filter_var($youtubeURL, FILTER_VALIDATE_URL) === false)
 	{
+		/*
 		$parsed_url = parse_url($youtubeURL);
 	    if($parsed_url == null)
-	 		return Message::get_error_message("Please, Provide Valid URL.");
+	 		return Message::get_error_message("Please, Provide Valid URL.A");
 
 	 	parse_str($parsed_url["query"], $queryParams);
 	 	if($queryParams == null || empty($queryParams))
 	 		return Message::get_error_message("Please, Provide Valid URL.");
-
-	    $videoId = $queryParams["v"];
+    	
+    	$videoId = $queryParams["v"];
 	    if($videoId == null || empty($videoId))
-	    	return Message::get_error_message("Please, Provide valid URL.");
+    		return Message::get_error_message("Please, Provide valid URL. URL must contain video ID.");
+		*/
+
+    	$videoId = GetVideoIDByURL($youtubeURL);
+    	if($videoId == null || empty($videoId))
+    		return Message::get_error_message("Please, Provide valid URL. URL must contain video ID.");
 
     	return Message::get_download_message("Success", null, $videoId);
 	}
@@ -104,22 +110,12 @@ function GetSrtByURL($url)
 {
 	global $server_captions_save_folder_name;
 	global $server_captions_save_folder_path;
+	
+	$validateURLMessage = ValidateYoutubeURL($url);
+	if($validateURLMessage == null || !$validateURLMessage->isOk)
+		return $validateURLMessage;
 
-	if(empty($url) || filter_var($url, FILTER_VALIDATE_URL) === false)
-		return Message::get_error_message("Please, Provide Valid URL.");
-
-    $parsed_url = parse_url($url);
-    if($parsed_url == null)
- 		return Message::get_error_message("Please, Provide Valid URL.");
-
- 	parse_str($parsed_url["query"], $queryParams);
- 	if($queryParams == null || empty($queryParams))
- 		return Message::get_error_message("Please, Provide Valid URL.");
-
-    $videoId = $queryParams["v"];
-    if($videoId == null || empty($videoId))
-    	return Message::get_error_message("Please, Provide valid URL.");
-
+	$videoId = $validateURLMessage->fileName;
     $foldername = $videoId;
 
     if(file_exists($server_captions_save_folder_path . $foldername))
@@ -169,6 +165,16 @@ function is_dir_empty($dir) {
   if (!is_readable($dir)) 
   	return NULL; 
   return (count(scandir($dir)) == 2);
+}
+
+function GetVideoIDByURL($url) {
+	preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $url, $matches);
+
+	if(sizeof($matches) > 1){
+		return $matches[1];
+	} else
+		return null;
+
 }
 
 
