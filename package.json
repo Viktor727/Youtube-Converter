@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/Viktor727/Youtube-Converter#readme",
   "dependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-sass": "^4.0.2"
   },
   "devDependencies": {
